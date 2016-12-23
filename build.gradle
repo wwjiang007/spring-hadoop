@@ -58,6 +58,7 @@ def forceDependencyVersions(project, distro) {
 	}
 }
 
+println "Building Spring for Apache Hadoop version: [$version]"
 println "Using Spring Framework version: [$springVersion]"
 println "Using Java version: [" + System.getProperty("java.version") + "]"
 
@@ -334,10 +335,14 @@ configure(javaProjects()) {
 
 	// dependencies that are common across all java projects
 	dependencies {
+		compile "org.springframework:spring-core:$springVersion"
+		compile "org.springframework:spring-beans:$springVersion"
 		compile "org.springframework:spring-aop:$springVersion"
 		compile "org.springframework:spring-context:$springVersion"
 		compile "org.springframework:spring-context-support:$springVersion"
+		compile "org.springframework:spring-expression:$springVersion"
 		compile "org.springframework:spring-jdbc:$springVersion"
+		compile "org.springframework:spring-messaging:$springVersion"
 		compile "org.springframework:spring-tx:$springVersion"
 	}
 
@@ -874,6 +879,7 @@ project('spring-data-hadoop-boot') {
 		compile "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
 		optional "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
 		runtime "org.yaml:snakeyaml:$snakeYamlVersion"
+		testCompile "org.springframework.boot:spring-boot-test:$springBootVersion"
 		testCompile "org.springframework:spring-test:$springVersion"
 		testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
 		testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
@@ -1229,6 +1235,7 @@ project('spring-yarn:spring-yarn-boot') {
 		optional "org.springframework.security:spring-security-config:$springSecurityVersion"
 		optional "org.springframework.security:spring-security-web:$springSecurityVersion"
 		runtime "org.yaml:snakeyaml:$snakeYamlVersion"
+		testCompile "org.springframework.boot:spring-boot-test:$springBootVersion"
 		testRuntime "org.apache.tomcat.embed:tomcat-embed-core:$tomcatEmbedVersion"
 		testRuntime "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcatEmbedVersion"
 		testCompile("org.mockito:mockito-core:$mockitoVersion") { dep ->
@@ -1251,7 +1258,7 @@ project('spring-yarn:spring-yarn-boot-cli') {
 
 project('spring-yarn:spring-yarn-boot-build-tests') {
 
-	apply plugin: 'spring-boot'
+	apply plugin: 'org.springframework.boot'
 
 	description = 'Spring Yarn Boot Build Tests'
 	dependencies {
